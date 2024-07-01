@@ -190,11 +190,7 @@ export class InstructionGenVisitor implements ir.VertexVisitor<Array<ins.Instruc
             arrayType = getVectorType();
 
         }
-        const instruction = new ins.AllocaInstruction(
-            this.namesMap.get(vertex)!,
-            arrayType
-        );
-        const out: Array<ins.Instruction> = [instruction];
+        const out: Array<ins.Instruction> = [];
 
         if (objectType instanceof ir.StaticArrayType) {
             vertex.args!.forEach((arg, index) => {
@@ -233,21 +229,22 @@ export class InstructionGenVisitor implements ir.VertexVisitor<Array<ins.Instruc
                 else {
                     sizeReg = this.namesMap.get(vertex.args![0])!;
                 }
-                const initInstruction = new ins.VoidCallInstruction(
+                const initInstruction = new ins.CallInstruction(
+                    this.namesMap.get(vertex)!,
+                    new LlvmPointerType(),
                     `create_sized_vector_${methodExtension}`,
                     [
-                        { value: this.namesMap.get(vertex)!, type: new LlvmPointerType() },
                         { value: sizeReg, type: new LlvmIntegerType(64) }
                     ]
                 );
                 out.push(initInstruction);
             }
             else {
-                const initInstruction = new ins.VoidCallInstruction(
+                const initInstruction = new ins.CallInstruction(
+                    this.namesMap.get(vertex)!,
+                    new LlvmPointerType(),
                     `create_vector_${methodExtension}`,
-                    [
-                        { value: this.namesMap.get(vertex)!, type: new LlvmPointerType() }
-                    ]
+                    []
                 );
                 out.push(initInstruction);
                 vertex.args!.forEach(arg => {

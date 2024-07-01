@@ -19,28 +19,28 @@ typedef ELEM_TYPE T;
 
 extern "C" {
 
-vector<T> FUNC_EXT(create_vector)() {
-    return vector<T>();
+vector<T>* FUNC_EXT(create_vector)() {
+    return new vector<T>();
 }
 
-vector<T> FUNC_EXT(create_sized_vector)(size_t size) {
-    return vector<T>(size);
+vector<T>* FUNC_EXT(create_sized_vector)(size_t size) {
+    return new vector<T>(size);
 }
 
-void FUNC_EXT(push_back)(vector<T> &v, T value) {
-    v.push_back(value);
+void FUNC_EXT(push_back)(vector<T>* v, T value) {
+    v->push_back(value);
 }
 
-T FUNC_EXT(get)(vector<T> &v, size_t index) {
-    return v[index];
+T FUNC_EXT(get)(vector<T>* v, size_t index) {
+    return (*v)[index];
 }
 
-void FUNC_EXT(set)(vector<T> &v, size_t index, T value) {
-    v[index] = value;
+void FUNC_EXT(set)(vector<T>* v, size_t index, T value) {
+    (*v)[index] = value;
 }
 
-size_t FUNC_EXT(size)(vector<T> &v) {
-    return v.size();
+size_t FUNC_EXT(size)(vector<T>* v) {
+    return v->size();
 }
 
 }
